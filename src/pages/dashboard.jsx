@@ -25,10 +25,16 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!deviceId) return;
-    const unsubscribe = subscribeToLogs((logs) => {
-      setLogs(logs);
-    }, deviceId);
-    return () => unsubscribe();
+    let unsubscribe = () => {};
+    (async () => {
+      unsubscribe = await subscribeToLogs((logs) => {
+        setLogs(logs);
+      }, deviceId);
+    })();
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, [deviceId]);
 
   return (

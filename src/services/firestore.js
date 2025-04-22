@@ -24,27 +24,28 @@ const getDeviceLogsRef = (deviceId) =>
   collection(db, `flowmeter/${deviceId}/logs`);
 const getDeviceDocRef = (deviceId) => doc(db, `flowmeter/${deviceId}`);
 
-// 📥 Add a new log entry
+// 📥 Add a new log
 export const subscribeToLogs = async (callback, deviceId) => {
   const deviceRef = getDeviceDocRef(deviceId);
   const deviceSnap = await getDoc(deviceRef);
 
   if (!deviceSnap.exists()) {
     console.error(`Device ${deviceId} not found`);
-    return;
+    return () => {}; // Return no-op unsubscribe to avoid crashing
   }
 
   const deviceData = deviceSnap.data();
   const deviceName = deviceData.deviceName;
   const q = query(getDeviceLogsRef(deviceId), orderBy("timeStamp", "desc"));
-  return onSnapshot(q, (snapshot) => {
-    console.log("Snapshot received:", snapshot);
+
+  const unsubscribe = onSnapshot(q, (snapshot) => {
     const logs = snapshot.docs.map(
-      (doc) =>
-        new Payload({ id: doc.id, deviceName: deviceName, ...doc.data() })
+      (doc) => new Payload({ id: doc.id, deviceName, ...doc.data() })
     );
     callback(logs);
   });
+
+  return unsubscribe;
 };
 
 // 📥 Get all logs (non-realtime)
