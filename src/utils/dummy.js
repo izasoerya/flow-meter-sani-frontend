@@ -5,15 +5,12 @@ let counter = 0;
 let docsCreated = [];
 
 const generateRandomLog = () => ({
-  id: `log-${counter++}`,
-  timeStamp: new Date(),
-  value: (Math.random() * 100).toFixed(2),
+  logId: `log-${counter++}`, // Match ESP as string
+  timestamp: new Date().toISOString(), // ISO format
+  value: parseFloat((Math.random() * 100).toFixed(2)), // Use numeric type
   status: (() => {
-    if (Math.random() < 0.5) {
-      return "Low";
-    } else if (Math.random() > 0.5 && Math.random() < 0.8) {
-      return "Normal";
-    }
+    if (Math.random() < 0.5) return "Low";
+    if (Math.random() < 0.8) return "Normal";
     return "High";
   })(),
 });

@@ -1,19 +1,18 @@
 // src/models/Payload.js
 
 export default class Payload {
-  constructor({ id, index, deviceName, value, timeStamp, status }) {
+  constructor({ id, deviceName, logId, value, timestamp }) {
     this.id = id;
-    this.index = index;
+    this.deviceName = deviceName;
+    this.logId = logId;
     this.deviceName = deviceName;
     this.value = value;
-    this.timeStamp = timeStamp;
-    this.status = status;
+    this.timestamp = timestamp;
   }
 
-  // Optional: add helpers
-  getFormattedTimestamp() {
-    return this.timeStamp?.seconds
-      ? new Date(this.timeStamp.seconds * 1000).toLocaleString()
+  getFormattedtimeStamp() {
+    return this.timestamp?.seconds
+      ? new Date(this.timestamp.seconds * 1000).toLocaleString()
       : "N/A";
   }
 

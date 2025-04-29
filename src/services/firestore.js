@@ -28,19 +28,19 @@ const getDeviceDocRef = (deviceId) => doc(db, `flowmeter/${deviceId}`);
 export const subscribeToLogs = async (callback, deviceId) => {
   const deviceRef = getDeviceDocRef(deviceId);
   const deviceSnap = await getDoc(deviceRef);
+  const deviceName = deviceSnap.data().deviceName || deviceId; // Use name or fallback to id
 
   if (!deviceSnap.exists()) {
     console.error(`Device ${deviceId} not found`);
     return () => {}; // Return no-op unsubscribe to avoid crashing
   }
 
-  const deviceData = deviceSnap.data();
-  const deviceName = deviceData.deviceName;
-  const q = query(getDeviceLogsRef(deviceId), orderBy("timeStamp", "desc"));
+  const q = query(getDeviceLogsRef(deviceId), orderBy("timestamp", "desc"));
 
   const unsubscribe = onSnapshot(q, (snapshot) => {
     const logs = snapshot.docs.map(
-      (doc) => new Payload({ id: doc.id, deviceName, ...doc.data() })
+      (doc) =>
+        new Payload({ id: doc.id, deviceName: deviceName, ...doc.data() })
     );
     callback(logs);
   });
@@ -51,7 +51,7 @@ export const subscribeToLogs = async (callback, deviceId) => {
 // 📥 Get all logs (non-realtime)
 export const getLogs = async (deviceId) => {
   try {
-    const q = query(getDeviceLogsRef(deviceId), orderBy("timeStamp", "desc"));
+    const q = query(getDeviceLogsRef(deviceId), orderBy("timestamp", "desc"));
     const snapshot = await getDocs(q);
     return snapshot.docs.map(
       (doc) => new Payload({ id: doc.id, ...doc.data() })

@@ -64,7 +64,7 @@ const Dashboard = () => {
         {logs.map((log) => (
           <ValueContainer
             key={log.index}
-            label={log.getFormattedTimestamp()}
+            label={log.getFormattedtimeStamp()}
             value={log.value}
             unit="L/min"
             status={log.status}
