@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { subscribeToLogs, getDeviceList, getLogs } from "../services/firestore";
+import { publishMessage } from "../services/mqtt";
 import { ValueContainer } from "../components/value_container";
 import { Dropdown } from "../components/dropdown";
 import { InteractiveButton } from "../components/interactive_button";
@@ -62,7 +63,10 @@ const Dashboard = () => {
         />
         <InteractiveButton
           isStart={isStart}
-          onClick={() => setIsStart((prev) => !prev)}
+          onClick={() => {
+            setIsStart((prev) => !prev);
+            publishMessage(isStart);
+          }}
         ></InteractiveButton>
       </div>
       <div className="value-container-wrapper">
