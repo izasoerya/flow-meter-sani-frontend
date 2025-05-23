@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { subscribeToLogs, getDeviceList, getLogs } from "../services/firestore";
 import { ValueContainer } from "../components/value_container";
 import { Dropdown } from "../components/dropdown";
+import { InteractiveButton } from "../components/interactive_button";
 
 import "../styles/value_container.css"; // Optional, for styling
 
@@ -9,6 +10,7 @@ const Dashboard = () => {
   const [listDevice, setListDevice] = useState([]); // State to store the device list
   const [deviceId, setDeviceId] = useState(null);
   const [logs, setLogs] = useState([]);
+  const [isStart, setIsStart] = useState(true);
 
   useEffect(() => {
     const fetchDevices = async () => {
@@ -58,6 +60,10 @@ const Dashboard = () => {
             setDeviceId(deviceId); // Update the selected device ID
           }}
         />
+        <InteractiveButton
+          isStart={isStart}
+          onClick={() => setIsStart((prev) => !prev)}
+        ></InteractiveButton>
       </div>
       <div className="value-container-wrapper">
         {logs.length === 0 && <p>No logs found.</p>}

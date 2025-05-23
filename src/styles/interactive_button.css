@@ -1,0 +1,26 @@
+.interactive-button {
+  margin-top: 10%;
+  transition: background 0.2s, color 0.2s;
+}
+
+/* Green for Start */
+.interactive-button.start {
+  background: #4caf50;
+  color: #fff;
+}
+
+/* Red for Stop */
+.interactive-button.stop {
+  background: #f44336;
+  color: #fff;
+}
+
+.interactive-button:hover.start {
+  background: #81c784; /* lighter green */
+  color: #fff;
+}
+
+.interactive-button:hover.stop {
+  background: #e57373; /* lighter red */
+  color: #fff;
+}
