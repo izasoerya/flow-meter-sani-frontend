@@ -75,9 +75,10 @@ const Dashboard = () => {
           <ValueContainer
             key={log.index}
             label={`Data no. ${log.logId}`}
-            value={`${log.value} (Raw Value)`}
-            kalmanValue={`${log.kalmanValue} (Kalman Value)`}
-            unit="L/min"
+            value={log.value}
+            kalmanValue={log.kalmanValue}
+            unit=" (Raw Value)  mL"
+            unitKalman="(Kalman Value)  mL"
             status=""
             color={
               log.status === "High"

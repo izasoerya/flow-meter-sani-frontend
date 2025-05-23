@@ -8,6 +8,7 @@ export const ValueContainer = ({
   value,
   kalmanValue,
   unit,
+  unitKalman,
   status,
   color,
   timestamp,
@@ -38,7 +39,7 @@ export const ValueContainer = ({
       </div>
       <div className="value-container-body">
         <span className="value">{kalmanValue}</span>
-        {unit && <span className="unit">{unit}</span>}
+        {unit && <span className="unit">{unitKalman}</span>}
       </div>
     </div>
   );
@@ -50,6 +51,7 @@ ValueContainer.propTypes = {
   kalmanValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
     .isRequired,
   unit: PropTypes.string,
+  unitKalman: PropTypes.string,
   status: PropTypes.string,
   color: PropTypes.string,
   timestamp: PropTypes.string,
