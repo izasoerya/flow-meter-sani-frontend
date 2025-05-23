@@ -6,6 +6,7 @@ import "../styles/value_container.css"; // Optional, for styling
 export const ValueContainer = ({
   label,
   value,
+  kalmanValue,
   unit,
   status,
   color,
@@ -35,6 +36,10 @@ export const ValueContainer = ({
         <span className="value">{value}</span>
         {unit && <span className="unit">{unit}</span>}
       </div>
+      <div className="value-container-body">
+        <span className="value">{kalmanValue}</span>
+        {unit && <span className="unit">{unit}</span>}
+      </div>
     </div>
   );
 };
@@ -42,6 +47,8 @@ export const ValueContainer = ({
 ValueContainer.propTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  kalmanValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
   unit: PropTypes.string,
   status: PropTypes.string,
   color: PropTypes.string,

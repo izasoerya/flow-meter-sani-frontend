@@ -72,6 +72,7 @@ const Dashboard = () => {
             key={log.index}
             label={`Data no. ${log.logId}`}
             value={log.value}
+            kalmanValue={log.kalmanValue}
             unit="L/min"
             status=""
             color={

@@ -1,12 +1,13 @@
 // src/models/Payload.js
 
 export default class Payload {
-  constructor({ id, deviceName, logId, value, timestamp }) {
+  constructor({ id, deviceName, logId, value, kalmanValue, timestamp }) {
     this.id = id;
     this.deviceName = deviceName;
     this.logId = logId;
     this.deviceName = deviceName;
     this.value = value;
+    this.kalmanValue = kalmanValue;
     this.timestamp = timestamp;
   }
 
