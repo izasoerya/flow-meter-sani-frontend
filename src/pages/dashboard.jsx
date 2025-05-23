@@ -64,10 +64,10 @@ const Dashboard = () => {
         {logs.map((log) => (
           <ValueContainer
             key={log.index}
-            label={log.getFormattedtimeStamp()}
+            label={`Data no. ${log.logId}`}
             value={log.value}
             unit="L/min"
-            status={log.status}
+            status=""
             color={
               log.status === "High"
                 ? "#FF9800"

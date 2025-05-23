@@ -35,8 +35,7 @@ export const subscribeToLogs = async (callback, deviceId) => {
     return () => {}; // Return no-op unsubscribe to avoid crashing
   }
 
-  const q = query(getDeviceLogsRef(deviceId), orderBy("timestamp", "desc"));
-
+  const q = query(getDeviceLogsRef(deviceId), orderBy("logId", "desc"));
   const unsubscribe = onSnapshot(q, (snapshot) => {
     const logs = snapshot.docs.map(
       (doc) =>

@@ -14,7 +14,7 @@ export const ValueContainer = ({
   return (
     <div
       className="value-container"
-      style={{ borderColor: color || "#1976d2" }}
+      style={{ borderColor: color || "#197`21q` 2w1q` 1`6d2" }}
     >
       <div className="value-container-header">
         <span className="label">{label}</span>
