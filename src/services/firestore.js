@@ -12,6 +12,7 @@ import {
   updateDoc,
   deleteDoc,
   Timestamp,
+  limit,
 } from "firebase/firestore";
 
 import { app } from "./firebase.js"; // your initialized Firebase app
@@ -35,7 +36,11 @@ export const subscribeToLogs = async (callback, deviceId) => {
     return () => {}; // Return no-op unsubscribe to avoid crashing
   }
 
-  const q = query(getDeviceLogsRef(deviceId), orderBy("logId", "desc"));
+  const q = query(
+    getDeviceLogsRef(deviceId),
+    orderBy("logId", "desc"),
+    limit(100)
+  );
   const unsubscribe = onSnapshot(q, (snapshot) => {
     const logs = snapshot.docs.map(
       (doc) =>

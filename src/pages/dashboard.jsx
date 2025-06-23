@@ -12,6 +12,7 @@ const Dashboard = () => {
   const [deviceId, setDeviceId] = useState(null);
   const [logs, setLogs] = useState([]);
   const [isStart, setIsStart] = useState(true);
+  const [realtimeMode, setRealtimeMode] = useState(false);
 
   useEffect(() => {
     const fetchDevices = async () => {
@@ -54,11 +55,11 @@ const Dashboard = () => {
         <Dropdown
           listDevice={listDevice.map((device) => ({
             id: device.id,
-            name: device.name || device.id, // Use name or fallback to id
+            name: device.name || device.id,
           }))}
           onSelect={(deviceId) => {
             console.log("Selected device ID:", deviceId);
-            setDeviceId(deviceId); // Update the selected device ID
+            setDeviceId(deviceId);
           }}
         />
         <InteractiveButton
@@ -67,29 +68,58 @@ const Dashboard = () => {
             setIsStart((prev) => !prev);
             publishMessage(isStart);
           }}
-        ></InteractiveButton>
+        />
+        <label style={{ marginTop: "20px", display: "block" }}>
+          <input
+            type="checkbox"
+            checked={realtimeMode}
+            onChange={(e) => setRealtimeMode(e.target.checked)}
+          />{" "}
+          Realtime mode
+        </label>
       </div>
+
       <div className="value-container-wrapper">
         {logs.length === 0 && <p>No logs found.</p>}
-        {logs.map((log) => (
+        {!realtimeMode &&
+          logs.map((log) => (
+            <ValueContainer
+              key={log.index}
+              label={`Data no. ${log.logId}`}
+              value={log.value}
+              kalmanValue={log.kalmanValue}
+              unit=" (Raw Value)  mL"
+              unitKalman="(Kalman Value)  mL"
+              status=""
+              color={
+                log.status === "High"
+                  ? "#FF9800"
+                  : log.status === "Low"
+                  ? "#F44336"
+                  : "#4CAF50"
+              }
+              timestamp={log.deviceName}
+            />
+          ))}
+        {realtimeMode && logs.length > 0 && (
           <ValueContainer
-            key={log.index}
-            label={`Data no. ${log.logId}`}
-            value={log.value}
-            kalmanValue={log.kalmanValue}
+            key={logs[0].index}
+            label={`Data no. ${logs[0].logId}`}
+            value={logs[0].value}
+            kalmanValue={logs[0].kalmanValue}
             unit=" (Raw Value)  mL"
             unitKalman="(Kalman Value)  mL"
             status=""
             color={
-              log.status === "High"
+              logs[0].status === "High"
                 ? "#FF9800"
-                : log.status === "Low"
+                : logs[0].status === "Low"
                 ? "#F44336"
                 : "#4CAF50"
             }
-            timestamp={log.deviceName}
+            timestamp={logs[0].deviceName}
           />
-        ))}
+        )}
       </div>
     </div>
   );
