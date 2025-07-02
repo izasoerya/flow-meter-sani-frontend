@@ -88,8 +88,8 @@ const Dashboard = () => {
               label={`Data no. ${log.logId}`}
               value={log.value}
               kalmanValue={log.kalmanValue}
-              unit=" (Raw Value)  mL"
-              unitKalman="(Kalman Value)  mL"
+              unit=" (Raw)  L/min"
+              unitKalman="(Kalman)  L/min"
               status=""
               color={
                 log.status === "High"
