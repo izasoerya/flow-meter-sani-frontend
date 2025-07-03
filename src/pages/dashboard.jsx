@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { subscribeToLogs, getDeviceList, getLogs } from "../services/firestore";
+import {
+  subscribeToLogs,
+  getDeviceList,
+  getLogs,
+  deleteAllLogs,
+} from "../services/firestore";
 import { publishMessage } from "../services/mqtt";
 import { ValueContainer } from "../components/value_container";
 import { Dropdown } from "../components/dropdown";
@@ -13,6 +18,19 @@ const Dashboard = () => {
   const [logs, setLogs] = useState([]);
   const [isStart, setIsStart] = useState(true);
   const [realtimeMode, setRealtimeMode] = useState(false);
+  const handleDeleteLogs = async () => {
+    if (!deviceId) {
+      alert("Please select a device first.");
+      return;
+    }
+    const confirmed = window.confirm(
+      "Are you sure you want to delete all logs for this device?"
+    );
+    if (confirmed) {
+      await deleteAllLogs(deviceId);
+      setLogs([]); // Clear logs in UI
+    }
+  };
 
   useEffect(() => {
     const fetchDevices = async () => {
@@ -69,6 +87,7 @@ const Dashboard = () => {
             publishMessage(isStart);
           }}
         />
+
         <label style={{ marginTop: "20px", display: "block" }}>
           <input
             type="checkbox"
@@ -77,6 +96,21 @@ const Dashboard = () => {
           />{" "}
           Realtime mode
         </label>
+        <button
+          style={{
+            marginTop: "16px",
+            background: "#f44336",
+            color: "#fff",
+            border: "none",
+            borderRadius: "4px",
+            padding: "8px 16px",
+            cursor: "pointer",
+            fontWeight: "bold",
+          }}
+          onClick={handleDeleteLogs}
+        >
+          Delete Logs
+        </button>
       </div>
 
       <div className="value-container-wrapper">
@@ -107,8 +141,8 @@ const Dashboard = () => {
             label={`Data no. ${logs[0].logId}`}
             value={logs[0].value}
             kalmanValue={logs[0].kalmanValue}
-            unit=" (Raw Value)  mL"
-            unitKalman="(Kalman Value)  mL"
+            unit=" (Raw)  L/min"
+            unitKalman=" (Kalman)  L/min"
             status=""
             color={
               logs[0].status === "High"

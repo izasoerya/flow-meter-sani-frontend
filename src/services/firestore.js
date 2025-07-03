@@ -86,8 +86,13 @@ export const setDevice = async (deviceId, data) => {
   await setDoc(ref, data, { merge: true });
 };
 
-// 🗑️ Delete a specific log
-export const deleteLog = async (deviceId, logId) => {
-  const logRef = doc(db, `flowmeters/${deviceId}/logs/${logId}`);
-  await deleteDoc(logRef);
+// 🗑️ Delete all logs for a device
+export const deleteAllLogs = async (deviceId) => {
+  const logsRef = getDeviceLogsRef(deviceId);
+  const snapshot = await getDocs(logsRef);
+  const batchDeletes = [];
+  snapshot.forEach((docSnap) => {
+    batchDeletes.push(deleteDoc(docSnap.ref));
+  });
+  await Promise.all(batchDeletes);
 };
